@@ -1,0 +1,10 @@
+venv
+*.pyc
+*.psd
+.DS_Store
+*.bak
+*data.csv
+*dataCUM.csv
+static/report/*/*.jpeg
+static.report/*/*.png
+reportC.html

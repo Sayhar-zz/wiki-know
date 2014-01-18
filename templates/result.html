@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+{% block title %}Result{% endblock %}
+{% block content %}
+<div class="results" style="max-width: 980px; margin: 0 auto;">
+  <div class="text-center text-success" id="result_info">
+    <h4>
+      <span class="muted">{{ winner }}</span> received {{ win_by }}% more donations than <span class="muted">{{ loser }}</span> per banner impression.
+    </h4> 
+    <h5 class="text-center text-info">
+        {% if isconfidence %}
+        We
+        {% else %}
+        However, we
+        {% endif %}
+        can be pretty sure that in repeated testing <span class="muted">{{ winner }}</span> will do from <span {% if isconfidence %} class="text-success" {% else %} class="text-warning" {% endif %}>{{ atleast }}% to {{ atmost }}% </span>better.
+         {% if not isconfidence %}
+         <br />
+          This means that the chance that <span class="muted">{{ loser }}</span> actually does better than <span class="muted">{{ winner }}</span> is too high for us to be confident.
+          <br /> 
+         {% endif %}
+    </h5>
+    <h5 class="text-info">
+      Additionally, <span class="muted">{% if dollar_pct > 0 %}{{ winner }}{% else %}{{ loser }}{% endif%}</span> received 
+      <span class="{% if dollar_pct > 0 %}text-success{% else %}text-error{% endif %}">
+      {{ dollar_pct }}%
+      </span>
+       more dollars than <span class="muted">{% if dollar_pct > 0 %}{{ loser }}{% else %}{{ winner }}{% endif%}</span> per banner impression.
+    </h5> 
+  </div>
+
+  <div class="row-fluid">
+    <h5 class="text-center muted span10 offset1" id="explainer">{{ description }}</h5>
+  </div>
+
+  <div id="displayrow" class='row-fluid text-center'>
+    {% for name in imgs %}
+      <div class='span6'>
+        <h5 class="text-info">{{ longnames[name] }}:</h5>
+        {% for shot in imgs[name] %}
+        {% if shot == imgs[name][1] and manytype == 'multivariate' %}
+        <h6 class="screenshot-glue"><a href="show more examples" onclick="return false">This was a multivariate test. Click here to see other banners in this set.</a>
+        </h6>
+        {% endif %}
+        <img class='screenshot {% if shot != imgs[name][0] and manytype == 'multivariate' %}screenshot-hide' style="display:none" {% else %} '{% endif %} src="{{ shot }}" \> 
+        <!-- ' -->
+        {% endfor %}
+        
+      </div>
+    {% endfor %}
+  </div>
+
+
+
+
+
+   
+
+  <div class="text-center" id="results_buttonrow">
+            <!-- <a class="btn btn-info" href="#" onclick='$(".comments").slideToggle("slow"); return false'>Discuss </a> -->
+            <a id="prev" class="btn btn-success" href="{{ url_for('go_test', batch=batch,testname=prevtest) }}">Previous Test</a>
+            <a id="up" class="btn btn-info" href="{{ url_for('show_dir') }}#{{ testname }}">All</a>
+            <a id="next" class="btn btn-success" href="{{ url_for('go_test', batch=batch, testname=nexttest) }}">Next Test</a>
+            
+
+  </div>
+  
+  <h5 class='text-center see-results heygeeks'> <a href="{{ graphpath }}" onclick='return false'> 
+    <!-- <span class="text-center text-success">Hey Stats Geeks!</span> Click to see how the results looked like over time during the test: </a> -->
+    <span class="text-error">Click here</span> to see our internal diagnostics for this test, and how the results looked as we ran the test over time.</h5></a>
+  <div class="here-geeks" style="display:none">
+    <div class="text-center">
+      {% if diagnostic_graphs|length > 1 %}
+        {% for tabtype in diagnostic_graphs.keys() %}
+          {% if tabtype != "" %}
+            <a id="{{ tabtype }}_click" class="btn btn-info tabclick">{{ tabtype }} Info</a>
+          {% else %}
+            <a id="base_click" class="btn btn-info tabclick">Base Info</a>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    </div>
+    
+    <div id="base" class="hidden-tab">
+      <img class='pamplona'  {% if force_local_graph %}
+        src="{{ local_url_for('static', filename='report/{}/{}'.format(testname, graphname)) }}" 
+      {% else %}
+        src="{{ url_for('static', filename='report/{}/{}'.format(testname, graphname)) }}" 
+      {% endif %}
+      title="
+        Red line = p value (closer to zero, more certainty). 
+        Green = lower bound of possible 'true' result. 
+        Purple = upper bound. 
+        Click 'help me understand this graph' for longer explanation.">
+        <div class="text-center moregeeks">
+          <a class="btn btn-info" href="https://en.wikipedia.org/wiki/Confidence_interval" onclick="$('.hide-graphexplain').slideToggle('slow'); return false">Help me understand this graph</a>
+          <!-- <a class="btn btn-success" href="/static/report/{{ testname }}/report.html" onclick="$('.hidetables').slideToggle('slow'); return false">Click me for even more numbers!</a>
+          <a class="btn btn-success" href="/static/report/{{ testname }}/diagnostic4.html" onclick="$('.hide-diagnostics').slideToggle(500); return false">Click me for diagnostic graphs.</a> -->
+        </div>
+        <div class="hide-graphexplain row-fluid" style='display:none'>
+          <div class="span8 offset2">
+          Yes, the above plot could look quite intimdating at first, but it's actually a few simple components layered ontop of each other. 
+
+          <h5>The orangered line: <a href="http://en.wikipedia.org/wiki/P-value">p-value over time</a></h5><div class="graphexplain-text">
+          Simply put, the lower this line gets, the more certain we are that one variation truly does better than the other.  In many scientific settings, a p-value of less than .05 signals that we can be reasonably confident in our choice. But <a href="http://xkcd.com/882/">beware - one time out of twenty,</a> even a p-value of .05 will be wrong. The left y-axis tracks the p-value.</div>
+
+          <h5>The purple and green lines: <a href="https://en.wikipedia.org/wiki/Confidence_interval">confidence interval over time</a></h5><div class="graphexplain-text">
+          These illustrate our confidence interval of how well one variation beats the other. Think of it as mapping out the margin of error. We're pretty sure that the "real" amount that one variation beats another will be within these lines, but, as with the p-value, there's always a small chance that it will be above the purple line or below the green one. The right y-axis tracks the percentage improvement.</div>
+
+          <h5>Horizontal dotted line: The 'final' % improvement</h5><div class="graphexplain-text">
+          This line helpfully points out the final simple percentage improvement of one variation over the other. That value is the center of the confidence interval at the end of the test. We extend it back as a line as a visual aid to see how it compares to what our evolving results over time were. A 'healthy' test will have this line always within the confidence interval. It uses the right y-axis.</div>
+
+          <h5>Vertical dotted line: The 'naive' time to stop a test</h5><div class="graphexplain-text">
+          This line is used to highlight the exact time when p-value hits &lt; .05. More than a few A/B testing methods would have you stop your test here. Use it as a visual aid to compare the results you had then with the later results as you get more data. Would you have gotten the same winner? How does the confidence interval stack up with later intervals?</div>
+
+          <h5>The axes</h5><div class="graphexplain-text">
+          The x-axis tracks banner impressions, and therefore, obliquely, time.<br/>
+          There are 2 y-axes. The left y-axis tracks p-value. The right y-axis tracks how much the winning variation beat the loser.</div>
+
+          <h5>The subheadings</h5><div class="graphexplain-text">
+          The title lists the unique identifier of the test, and the winning variation. The subheadings give us the confidence interval at the end of the test (aka the final value of the purple and green lines), as well as the total number of banner impressions at the end of the test.</div>
+          </div>
+        </div> 
+        <div class="hidetables">
+          <h4 class="text-info text-center">Base Data:</h4>
+          {{ tables[0]|safe }}
+          <h4 class="text-info text-center">Improvement:</h4>
+          {{ tables[1]|safe }}
+        </div>
+        <div class="hide-diagnostics" > 
+          <h4 class="text-info text-center">Diagnostics:</h4>
+          {% for c in diagnostic_charts %}
+          <div class='diagnostic-table'>
+            {{ c|safe }}
+          </div>
+        </div>
+        <h4 class="text-info text-center">Diagnostic graphs:</h4>
+        {% endfor %}
+        {% for i in range(1,diagnostic_graphs[""]['num']) %}
+          {% if diagnostic_graphs[""][local] %}
+            <img src="{{ local_url_for('static', filename='report/{}/diagnostic_{}.jpeg'.format(testname, i) ) }}">
+          {% else %}
+            <img src="{{ url_for('static', filename='report/{}/diagnostic_{}.jpeg'.format(testname, i) ) }}">
+          {% endif %}
+        {% endfor %}
+      </div>
+
+         {% if diagnostic_graphs|length > 1 %}
+          {% for tabtype in diagnostic_graphs.keys() %}
+            {% if tabtype != "" %}
+              <div id="{{ tabtype }}" class="hidden-tab" style="display:none">
+              {% for i in range(1, diagnostic_graphs[tabtype]['num']) %}
+                {% if diagnostic_graphs[""][local] %}
+                  <img src="{{ local_url_for('static', filename='report/{}/diagnostic_{}_{}.jpeg'.format(testname, tabtype, i) ) }}">
+                {% else %}
+                  <img src="{{ url_for('static', filename='report/{}/diagnostic_{}_{}.jpeg'.format(testname, tabtype, i) ) }}">
+                {% endif %}
+              {% endfor %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+          
+        
+<!-- diagnostic_num
+        {% for d in diagnostic_plots %}
+        <img src="{{ url_for('static', filename='report/{}/{}'.format(testname, d) ) }}">
+        {% endfor %}
+-->
+      </div>
+  </div>
+  <div class="comments clearfix" class="row-fluid" style_="display:none">
+    <div class="span10 offset1">
+      <script>
+      var idcomments_acct = '5381409384923d3ad8aff95db1bc0a36';
+      var idcomments_post_id;
+      var idcomments_post_url;
+      </script>
+      <span id="IDCommentsPostTitle" style="display:none"></span>
+      <script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+    </div>
+    <div class="span1"></div>
+  </div>
+
+</div>
+{% endblock %}
+{% block scripts %}
+<script>$('.see-results').click(function(){$('.here-geeks').slideToggle('slow')})</script>
+<script type = "text/javascript">
+$(document).keypress(function(e) {
+  if(e.which == 13){
+    $("#next")[0].click();
+  }else if(e.which == 32){ //space
+      $('.see-results')[0].click();
+      $(document).off("keypress"); //you can only do this once.
+      $(document).keypress(function(e) {if(e.which == 13){ $("#next")[0].click();}});
+  }
+});
+</script>
+<script type="text/javascript">
+  $(document).keypress(function(e) {
+    if([37, 49].indexOf(e.which) > -1){
+      //if left arrow or 1:
+      $("#prev")[0].click();
+    }
+    if([39, 50].indexOf(e.which) > -1){
+      //if right arrow or 2:
+      $("#next")[0].click();
+    }
+    if([38].indexOf(e.which) > -1){
+      //if up arrow:
+      $("#up")[0].click();
+    }
+  });
+</script>
+<script type="text/javascript"> 
+  $('.screenshot-glue').click(function(){$(this).parent().children('.screenshot-hide').slideToggle('slow')}) 
+</script>
+
+<script type="text/javascript">
+click_to_zoom = function(){
+  that = $(this).clone()
+  $.colorbox({html:that, width:"85%"});
+}
+
+$('.screenshot').click(click_to_zoom)
+</script>
+
+<script type="text/javascript">
+  //When you click a tab, show that info in the diagnostics
+  $('.tabclick').click(function(x){  name = this.getAttribute('id'); name = name.substr(0,name.length - 6); $("#"+name).slideToggle('slow')  })
+</script>
+
+{% endblock %}

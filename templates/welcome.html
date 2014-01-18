@@ -1,0 +1,246 @@
+{% extends "base.html" %}
+{% block title %}Welcome!{% endblock %}
+{% block content %}
+<div class='row-fluid'>
+	<h1 class="span4 offset4 text-center text-success">Welcome!</h1>
+</div>
+<div class='row-fluid'>
+	<div class="span6 offset3">
+		<p>
+			The 5th biggest site on the internet runs without ads, and without government support. That site is Wikipedia (hosted by the Wikimedia Foundation), and it survives on small-dollar donations! Those donations serve 500 million users, keep servers running, and power the entire organization. 
+		</p>
+		<p>
+			Wikipedia and its small-donor funding model is something quite special. We use testing and experimentation to figure out the best way to explain the Wikimedia story to our users, and improve our fundraising efficiency. While doing so, we hope to cause  minimum disruption to any single visitor. Testing and analysis is helping us reach that goal. 
+		</p>
+		<p>
+			We've created this platform to showcase some of our significant tests and findings.
+		</p>
+		<br/>
+		<div class="text-center">
+			<a href="{{ url_for('go_test') }}" class="btn btn-success">Okay, show me your results! (CHRONOLOGICAL)</a>
+		</div>
+		<div class="text-center">
+			<a href="{{ url_for('show_dir') }}" class="btn btn-success">Directory of all tests (CHRONOLOGICAL)</a>
+		</div>
+		<br/>
+		<div class="text-center">
+			<a href="{{ url_for('go_test', batch='reverse') }}" class="btn btn-success">Okay, show me your results! (REVERSE)</a>
+		</div>
+		<div class="text-center">
+			<a href="{{ url_for('show_dir', batch='reverse') }}" class="btn btn-success">Directory of all tests (REVERSE)</a>
+		</div>
+		<br/>
+		<div class="text-center">
+			<a href="{{ url_for('go_test', batch='random') }}" class="btn btn-success">Okay, show me your results! (RANDOM)</a>
+		</div>
+		<br/>
+		<div class="text-center">
+			<a href="{{ url_for('go_test', batch='ascending') }}" class="btn btn-success">Okay, show me your results! (INCREASING DIFFERENCE)</a>
+		</div>
+		<br/>
+		<div class="text-center">
+			<a href="{{ url_for('go_test', batch='descending') }}" class="btn btn-success">Okay, show me your results! (DECREASING DIFFERENCE)</a>
+		</div>
+		<br/>
+		<div class="text-center">
+			<a href="{{ url_for('go_test', batch='interesting') }}" class="btn btn-success">Okay, show me your results! (Hand-picked interesting tests)</a>
+		</div>
+		<br/>
+
+		<h4>What this website does:</h4>
+		<p>
+			Right now, the Wikimedia fundraising team is in the middle of a systematic review of all our prior tests. Although we've posted many examples of our tests over the years, this review allows us to publish them in a standard format. We will publish as many results here as we can.
+		</p>
+		<p>
+			<strong>Today, we're showcasing our first batch of about 50 tests.</strong> Each shows a strong and statistically significant result. The first 36 show the evolution of our banners over time. (Though they're not all strictly chronological). The latter tests are in no particular order, because each was quite similar to one of those first tests. Don't worry, you'll know when we move from the first set of tests to the next.
+		</p>
+		<p>
+			There are a few different reasons why we conduct similar tests: to understand better what's making a difference; to try out something that seems to be working in different languages, countries, times of day, etc; and just to make sure that our results were accurate.
+		</p>
+		<p>
+			Over time, <strong>we hope to release and present many more tests.</strong> These tests are by no means the only significant results we've found - just a small sample. This batch only includes simple banner tests.
+		</p>
+		<p>
+			<strong>We've decided to show our results in an interactive way.</strong> You'll be presented with two different variations. For example, a gold background vs a blue background for a banner. After guessing which banner "won", you'll see the correct answer, and a link to some of the internal diagnostics we use to check for anomalies. 
+		</p>
+		<p>
+			For the purposes of this presentation, the winning banner is the one which got the most donations per banner impression. Though we're purposefully ignoring the donation amount in this presentation, we do take it into account when doing the actual testing. In the future, we'll release analysis of the donation amounts as well.
+		</p>
+		<h4>What we tested:</h4>
+		<p>
+			Nearly all of our donations come from running banners at the top of the page. The banner changes as our testing uncovers better-performing variations. And we're testing all the time.
+		</p>
+		<p>
+			Though we're focusing on banners in this release, we've tested other variables as well. We've spent hundreds of tests on:
+		</p>
+		<ul>
+			<li>Appeal Letters</li>
+			<li>Donation Form Design</li>
+			<li>Payment Methods</li>
+			<li>Banner/Landing page combinations</li>
+			<li>Translations</li>
+			<li>Other variables</li>
+		</ul>
+
+		
+		<h4>Why this is important:</h4>
+		<p>
+			To quote from our report, <a href="http://meta.wikimedia.org/wiki/Fundraising_2012/How_Wikimedia_revenue_grows">How Wikimedia Grows,</a> 
+			<blockquote>Wikimedia projects are funded by an incredibly unusual revenue model. We are showing that a top website, a universal educational resource, a central pillar of the world's information infrastructure, can thrive without selling its soul and independence to private investors or advertisers. This revenue model is one of the things that ensures our ability to serve our sites for free with all content under a free license.</blockquote>
+		</p>
+		<p>
+			Wikimedia's mission is to bring free educational content to the world. Part of that education involves sharing the knowledge we've learned through billions of pageviews worth of testing on the world's 5th biggest website. 
+		</p>
+		<p>
+			We hope you enjoy this look into our testing process. 
+		</p>
+	</div>
+</div>
+
+
+<div class="text-center">
+	<a href="{{ url_for('go_test',batch='chronological', testname=None) }}" class="btn btn-success">Click here to start guessing</a>
+</div>
+<br />
+<div class="text-center" id="show-stats">
+	<a href="#how-stats" class="btn btn-info">How we calculate our statistics</a>
+</div>
+
+
+<div id="how-stats" class='row-fluid' style='display:none'>
+	<div class="span6" >
+		<br/>
+		<h3>Overview</h3>
+		<p>
+			<strong>We run tests as scientifically as we can: </strong>
+			When we test a banner, every Wikipedia visitor has an equal chance of seeing one version of the banner or the other. Each banner will ask that visitor to consider donating to Wikimedia. The banners are shown at the same time in the same languages to people in the same countries, to make sure that if one performs better than the other, we can start to trust the results.
+		</p>
+		<p>
+			<strong>We can't blindly trust the raw results of our tests.</strong>
+			If banner A, for example, got 10% more donations than banner B (per the same number of impressions), we can't blindly use that 10% figure. Like a poll you might see in a newspaper, any result has a <a href="http://en.wikipedia.org/wiki/Margin_of_error">margin of error</a> associated with it. Adding and subtracting the margin of error gives us something called a confidence interval. 
+		</p>
+		<p>
+			A 10% improvement with a margin of error of, say, 4% means that our confidence interval is 6-14%. In other words, we're quite sure that A really does perform between 6-14% better than B. 
+		</p>
+		<p>
+			<strong>Here's how we find the confidence  interval:</strong>
+			<ul>
+				<li>
+					First, we start out with the raw numbers. Banner A might get donations from 1.1% of visitors, and B might get 1%. In this case, A is doing 10% better than B. 
+				</li>
+				<li>
+					Next, we <a href="http://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval">can easily find</a> the confidence intervals of how well A and B did individually.
+				</li>
+				<li> Then, we find something called the <a href="http://en.wikipedia.org/wiki/Standard_deviation">standard devations</a> of both A and B's confidence intervals, and <a href="http://en.wikipedia.org/wiki/Standard_deviation#Combining_standard_deviations">combine them.</a> 
+				</li>
+				<li>
+					Lastly, we use the new standard deviation to calculate the confidence interval for how much more effective A was than B.
+				</li>
+			</ul>
+		</p>
+		<p>
+			Sometimes, the range isn't all positive. Instead of 6-14%, A might perform between -2-12% better than B. That means that by our standards we aren't sure that A actually does beat B. Other times, the entire range is positive, and we know we've found a significant difference.
+		</p>
+	</div>
+	<div class="span6">
+		<div id="parseThis">
+		<br/>
+		<h3>A more "mathy" explanation:</h3>
+		<strong>Our method is to calculate:</strong>
+		<ol>
+			<li>Mean & Standard deviation of each of the two types of banners</li>
+			<li>Absolute Mean & Standard deviation of how much the winner improves over the loser</li>
+			<li>Proportionate Mean & Standard deviation of how much the winner improves over the loser</li>
+			<li>Confidence intervals of how much the winner proportionally improves over the loser</li>
+		</ol>
+		<p>
+			<em>In that order.</em> 
+		</p>
+		<p>
+			<strong>1.</strong> We start off by calculating the mean and standard deviation (P and σ) of the two variations (aka two banners) by using the Agresti-Coull binomial confidence method. For the purposes of this example, B is the "winning variation"
+		</p>
+		<p>
+			<strong>2.</strong> We find the absolute improvement mean and standard deviation of B over A by the following method: 
+			<ul style='list-style-type:none'>
+				<li>
+					<strong id="2a">a.</strong> $P_b - P_a$ = Absolute Improvement Mean
+				</li>
+				<li>
+					<strong id="2b">b.</strong> $√{σ_a^2+σ_b^2}$ = Absolute Improvement Standard Deviation 
+				</li>
+			</uL>
+		</p>
+		<p>
+			<strong>3.</strong> The relative improvement mean and sd is found by dividing <a href="#2a">$2_a$</a> and <a href="#2b">$2_b$</a> by $P_a$
+			<ul style='list-style-type:none'>
+				<li>
+					<strong id="3a">a.</strong> ${P_b - P_a}/P_a$ = relative improvement mean
+				</li>
+				<li>
+					<strong id="3b">b.</strong> $√{σ_a^2+σ_b^2}/P_a$ = Relative Improvement Standard Deviation 
+				</li>
+			</uL>
+
+
+		</p>
+		<p>
+			<strong>4.</strong> The confidence intervals are found through the quantile function in R: <code>qnorm(c(.025,.975) , mean=newmean, sd=newsd)</code>
+			<p>
+				<p>
+					<strong>Here's a snippet of R code that makes it all work:</strong>
+				</p>
+	</div>
+				<pre>
+#"Control" is the losing variation, and "Variable" is the winner.
+controlint &lt;- binom.confint(controlSuccess, controlTrials, conf.level=alpha, methods="agresti-coull")
+controlmean &lt;- controlint$mean
+controllower &lt;- controlint$lower
+controlupper &lt;- controlint$upper
+
+# Same deal, with variable instead of control this time
+varconfint &lt;- binom.confint(varSuccess, varTrials, conf.level=alpha, methods="agresti-coull")
+varmean &lt;- varconfint$mean
+varlower &lt;- varconfint$lower
+varupper &lt;- varconfint$upper
+
+# 95% bound is 1.96 standard devations:
+controlsd &lt;- (controlupper - controllower)/(2*1.96)
+varsd &lt;- (varupper - varlower)/(2*1.96)
+
+improvement &lt;- function(controlsd, controlmean, varsd, varmean){
+	newsd &lt;- sqrt((varsd * varsd) + (controlsd * controlsd))
+	newmean &lt;- varmean - controlmean
+	dist &lt;- qnorm(c(.025,.975) , mean=newmean, sd=newsd) #p = .05, two-tailed
+	l &lt;- dist[1]
+	u &lt;- dist[2]
+
+	lowerboundrelativesuccess &lt;- l/controlmean
+	upperboundrelativesuccess &lt;- u/controlmean
+	return(list(upperbound=upperboundrelativesuccess, lowerbound=lowerboundrelativesuccess, mean=newmean, sd=newsd))
+}
+
+uplow &lt;- improvement(controlsd, controlmean, varsd, varmean)
+lowerboundrelativesuccess &lt;- uplow$lowerbound
+upperboundrelativesuccess &lt;- uplow$upperbound
+			</pre>
+
+		</div>
+	</div>
+	{% endblock %}
+	{% block scripts %}
+	<script type="text/javascript">
+	$('#show-stats').click(function(){$('#how-stats').slideToggle('slow')}) 
+	</script>
+	<script src="{{ local_url_for('static', filename='js/jqmath-etc-0.4.0.min.js') }}"></script>
+	<link rel="stylesheet" href="{{ local_url_for('static', filename='css/jqmath-0.4.0.css') }}">
+	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=UnifrakturMaguntia">
+	<script type="text/javascript">
+		M.parseMath(document.getElementById('parseThis'))
+	</script>
+
+	{% endblock %}
+	{% block cookie %}
+	<script type="text/javascript"> 
+	window.onload = setshowCookie(false)
+	</script>
+	{% endblock %}

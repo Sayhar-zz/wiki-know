@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Result{% endblock %}
+{% block content %}
+<div class="results" style="max-width: 980px; margin: 0 auto;">
+  <h1 class='text-center' id="result_one_word">
+  <!-- {% if guess == True %}
+    <span class="text-success">CORRECT.</span>
+  {% else %}
+    <span class="text-error">Why not Zoidberg?</span>
+  {% endif %}
+  -->
+    <span class="text-success">Congratulations.</span> 
+  </h1>
+  <div class="row-fluid">
+  <h5 class="span10 offset1 text-center text-info">
+    You've reached a milestone in this game. From now on, the tests you see might seem familiar. They'll be new tests - but they'll be testing the same variables as you might have seen before. Does testing the same variable over again give us the same results? Continue, and find out.
+  </h5>
+  </div>
+  <div class="text-center" id="results_buttonrow">
+    <a class="btn btn-success" href="{{ url_for('go_test', batch=batch, testname=next) }}">Show me more tests!</a>
+  </div>
+  
+
+</div>
+{% endblock %}

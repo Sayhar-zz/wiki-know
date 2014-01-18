@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Brought to you by Wikimedia{% endblock %}
+{% block content %}
+  <h1 class="text-center">That's all, folks.</h1>
+  <br />
+  <div class="row-fluid">
+    <h3 class="span8 offset2 text-center text-success">Be sure to check back soon! This is only a first installment of hundreds of tests we've run. We hope to put up many more in the future.</h3>
+  </div>
+  <br/>
+  <p>
+    <div class="text-center"><a class="btn btn-info" href="{{ url_for('go_test', batch=batch) }}">Go back to the beginning</a></div>
+  </p>
+{% endblock %}

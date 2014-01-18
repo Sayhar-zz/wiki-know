@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}{% if title %}{{ title }} {% else %}404'd!{% endif %}{% endblock %}
+{% block content %}
+
+  <h1 class="text-center text-error">Error!</h1>
+  <h4 class='text-center'>{{ why }}</h4>
+  <div class='text-center'>
+    <img class="img-rounded errorshot" src="{{ local_url_for('static', filename='img/supportive_boss.png') }}"> <br/>
+    <br/>
+   	{% if batch %}
+    <a class='btn btn-large btn-inverse' href="{{ url_for('go_test', batch=batch) }}">Let me try again</a>
+    {% else %}
+	<a class='btn btn-large btn-inverse' href="{{ url_for('welcome') }}">Let me try again</a>
+    {% endif %}
+  </div>
+{% endblock %}

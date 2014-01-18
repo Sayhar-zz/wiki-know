@@ -1,0 +1,81 @@
+/*guess.html*/
+
+.screenshot {
+	display: inline-block;
+	height: auto;
+	padding-bottom: 5%
+}
+
+.screenshot-glue{
+	
+}
+.screenshot-hide{
+
+}
+
+.vs{
+	color:red;
+}
+
+#hints{
+	margin-top:4%;
+}
+
+/*result.html*/
+
+#result_one_word{
+	margin-top: 10%;
+}
+#result_info{
+	margin-top: 7%;
+}
+#results_buttonrow{
+	margin-top: 7%;
+	margin-bottom: 0%;
+}
+.heygeeks {
+	margin-top:7%;
+}
+.moregeeks{
+	margin:3%;
+}
+.pamplona {
+	width: 100%;
+	height: auto;
+}
+
+/*error.html*/
+.errorshot {
+	width:50%;
+	height: auto;
+	max-width: 500px;
+	margin-top:5%;
+	margin-bottom: 5%;
+}
+
+/*base.html*/
+
+#footer{
+	margin-top: 5%;
+	background-color: #FFF7EB;
+	border-bottom: solid #FFF7EB; 1px;
+}
+
+.whowhathow{
+	
+}
+
+.whowhathow a:link, .whowhathow a:visited, .whowhathow a:hover, .whowhathow a:active {
+	color:#5E6A97;
+}
+
+
+#popup_content{
+	background:#032f;
+	margin:2%;
+}
+
+/*directory.html*/
+.dir_thumb{
+	max-width: 150px;
+}

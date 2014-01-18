@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- by Sahar Massachi
+  2013 
+
+  Code: AGPLv3
+  Data: CC-Attribution-Share_alike 3.0
+
+  Framework: Flask
+  CSS / Javascript: Based off Bootstrap
+  Data: Munged using R, stored in sqlite3
+
+  Thanks to the Wikimedia Fundraising team for their valuable work.
+
+  Shoutout to David Baumgold and Yale Spector, two gentlemen who were handy with tips and advice whenever this author needed it. 
+
+-->
+<link rel="stylesheet" href="{{ local_url_for('static', filename='css/bootstrap.min.css') }}" media="screen">
+<link href="{{ local_url_for('static', filename='css/bootstrap-responsive.min.css') }}" media="screen" rel="stylesheet">
+<link rel="stylesheet" href="{{ local_url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ local_url_for('static', filename='css/colorbox.css') }}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<meta charset="UTF-8">
+<script type="text/javascript">
+
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-41468502-1']);
+_gaq.push(['_setDomainName', 'herokuapp.com']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : '//www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+
+</script>
+{% block head %}
+<title>{% block title %}AB-test-o-rama{% endblock %}</title>
+{% endblock %}
+</head>
+<body>
+  <!-- <a href="//github.com/" class="hidden-phone"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a> -->
+  <div class="navbar navbar-inverse">
+    <div class="navbar-inner">
+      <a class="brand" href="{{ local_url_for('welcome') }}">Smallest Sample</a>
+      <ul class="nav">
+        <!-- <li  class="active"> --> <li><a href="{{ local_url_for('welcome') }}">About</a></li>
+        
+        <li><a href="https://github.com/Sayhar/wiki-guess">Github</a></li>
+        <li><a href="#" 
+  onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u={{ local_url_for('welcome') }}', 
+      'facebook-share-dialog', 
+      'width=626,height=436'); 
+    return false;">
+  Share on Facebook
+        </a></li>
+
+        {% block navbaritem %}
+        {% endblock %}
+      </ul>
+    </div>
+  </div> 
+  <div class="container">
+    <div id="content" class="clearfix">{% block content %}{% endblock %}</div>
+
+    {% block hidden %}
+    <div class="popup" style='display:none'>
+      <div id='popup_content'>
+        <br/>
+        <h3 class="text-success text-center" >Welcome.</h3>
+        <div class="text-info" style="padding: 30px;">
+          <p>This site presents a taste of what the Wikimedia fundraising team has learned over the course of hundreds and hundreds of tests.</p>
+
+          <p>On this site, you play a game. First, you'll see two different types of banners. Choose the one you think inspired the most donations, and then you'll go to a page that shows how right (or wrong) you were. Keep going to see more tests. </p>
+
+          <p><strong><a href="{{ local_url_for('welcome') }}">Please check the about page to learn more about how and why we've run these tests.</a></strong> </p>
+          <div class="text-right">
+            <a href="closeme" onclick="$.colorbox.close(); return false" class="btn btn-success">Understood.</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endblock %}
+
+
+  </div>
+
+  <div id="footer">
+    <div class="row-fluid text-center whowhathow muted">
+      <div class="span4">
+        <h5><a href="{{ local_url_for('welcome') }}">About</a></h5>
+      </div>
+      <div class="span4">
+        <h5></h5>
+      </div>
+      <div class="span4">
+        <h5>Built with <a href="//flask.pocoo.org">Flask</a>, <a href="//twitter.github.com/bootstrap/">Bootstrap</a>, and <a href="//www.r-project.org/">R</a><h5>
+        </div>
+      </div>
+      {% block footer %}
+      <div class="muted text-center">
+        <a rel="license" href="//www.gnu.org/licenses/agpl.html">
+          <img src="{{ local_url_for('static', filename='img/agplv3.png') }}">
+        </a>
+        <a rel="license" href="//creativecommons.org/licenses/by-sa/3.0/">
+          <img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by-sa/3.0/88x31.png" />
+        </a>
+        <h6 class="text-center">Code distributed under <a href="//www.gnu.org/licenses/agpl.html">AGPLv3</a>, data <a rel="license" href="//creativecommons.org/licenses/by-sa/3.0/">CC BY SA 3.0</a></h6>
+
+
+
+      </div>
+      {% endblock %}
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="{{ local_url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ local_url_for('static', filename='js/hotornot.js') }}"></script>
+    <script src="{{ local_url_for('static', filename='js/colorbox.min.js') }}"></script>
+    {% block cookie %}
+    <script type="text/javascript"> 
+    window.onload = setshowCookie(true)
+    </script>
+    {% endblock %}
+    {% block scripts %}
+    {% endblock %}
+  </body>
+  </html>
+
+  <!--
+This file is part of Wiki-Guess.
+
+Wiki-Guess is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Wiki-Guess is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with Wiki-Guess.  If not, see <http://www.gnu.org/licenses/>.
+-->
