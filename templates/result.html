@@ -79,8 +79,9 @@
         {% endfor %}
       {% endif %}
     </div>
-    
+    <div id="diag-container">
     <div id="base" class="hidden-tab">
+    
       <img class='pamplona'  {% if force_local_graph %}
         src="{{ local_url_for('static', filename='report/{}/{}'.format(testname, graphname)) }}" 
       {% else %}
@@ -143,8 +144,10 @@
           {% endif %}
         {% endfor %}
       </div>
+    </div>
+         
 
-         {% if diagnostic_graphs|length > 1 %}
+        {% if diagnostic_graphs|length > 1 %}
           {% for tabtype in diagnostic_graphs.keys() %}
             {% if tabtype != "" %}
               <div id="{{ tabtype }}" class="hidden-tab" style="display:none">
@@ -159,14 +162,28 @@
             {% endif %}
           {% endfor %}
         {% endif %}
+
+      </div>
+
           
-        
+        <div id="bottom-tabbuttons"class="text-center">
+        {% if diagnostic_graphs|length > 1 %}
+          {% for tabtype in diagnostic_graphs.keys() %}
+            {% if tabtype != "" %}
+              <a id="{{ tabtype }}_clic2" class="btn btn-info tabclick">{{ tabtype }} Info</a>
+            {% else %}
+              <a id="base_clic2" class="btn btn-info tabclick">Base Info</a>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
 <!-- diagnostic_num
         {% for d in diagnostic_plots %}
         <img src="{{ url_for('static', filename='report/{}/{}'.format(testname, d) ) }}">
         {% endfor %}
 -->
-      </div>
+      
+    </div>
+      
   </div>
   <div class="comments clearfix" class="row-fluid" style_="display:none">
     <div class="span10 offset1">
@@ -226,8 +243,27 @@ $('.screenshot').click(click_to_zoom)
 </script>
 
 <script type="text/javascript">
+  toggle_tabs = function(x){ 
+      name = x.target.getAttribute('id'); 
+      name = name.substr(0,name.length - 6); 
+      $("#"+name).slideToggle('slow', check_set_bottomtabs);    
+  }
+
+  check_set_bottomtabs = function(){
+    allhidden = true
+    children = $('#diag-container').children()
+    for(i=0; i<children.length; i++){
+      c = $(children[i])
+      if(c.is(":visible")){
+        allhidden = false
+        break;
+      } 
+    } 
+    allhidden ? $('#bottom-tabbuttons').hide() : $('#bottom-tabbuttons').show()
+  }
+
   //When you click a tab, show that info in the diagnostics
-  $('.tabclick').click(function(x){  name = this.getAttribute('id'); name = name.substr(0,name.length - 6); $("#"+name).slideToggle('slow')  })
+  $('.tabclick').click(toggle_tabs)
 </script>
 
 {% endblock %}

@@ -1,2 +1,2 @@
 "test_id","var","multiple","country","language","winner","loser","bestguess","p","lowerbound","upperbound","totalimpressions","totaldonations","time","type","testname","dollarimprovement","dollarlower","dollarupper","dollarimprovementpct","dollarlowerpct","dollarupperpct"
-"sample","Design:.Color","0","YY","yy","Gold.banner","Blue.banner",2.61,0.4,-3.31,8.52,4785300,4502,1385572200,"banner","sample",0.000605,-0.00114,0.00235,4.81,-9.07,18.7
+"sample","Design:.Color","0","YY","yy","Gold.banner","Blue.banner",2.61,0.4,-1.26,6.47,4785300,4502,1385572200,"banner","sample",0.000605,-0.00114,0.00235,4.81,-9.07,18.7
