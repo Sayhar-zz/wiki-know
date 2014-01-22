@@ -1,0 +1,61 @@
+{% extends "directory.html" %}
+{% block rows %}	
+{% for test in list %}		
+	<td>
+		<h5>{{ allnames[test][allresults[test]['winner']] }}</h5>
+			<img class="dir_thumb" src="{{ allshots[test][allresults[test]['winner']][0] }}"></img>
+	</td>
+
+	{% for value in allshots[test] %}
+	{% if value != allresults[test]['winner'] %}
+	<td>
+		<h5>{{ allnames[test][value] }}</h5>
+			<img class="dir_thumb" src="{{ allshots[test][value][0] }}"></img>
+	</td>
+	{% endif %}
+	{% endfor %}
+
+	<td>
+		<strong>Winner:</strong> 
+		<p>{{ allnames[test][allresults[test]['winner']] }}</p>
+	</td>
+
+
+	<td>
+		<strong>Lower Bound:</strong> 
+		<p>
+		{% if allresults[test]['lowerbound'] < 0 %} <span class="text-warning"> {% else %} <span class="text-success"> {% endif %}{{ allresults[test]['lowerbound'] }} </span>
+		</p>
+	</td>
+	
+	<td>
+		<strong>Upper Bound:</strong>
+		<p>
+		{% if allresults[test]['lowerbound'] < 0 %} <span class="text-warning"> {% else %} <span class="text-success"> {% endif %}{{ allresults[test]['upperbound'] }}</span>
+		</p>
+	</td>
+	<!-- 			
+	<td>
+		<strong>Dollar Improvement:</strong>
+		{% if allresults[test]['upper_dollar'] < 0 %} <span class="text-error"> {% elif allresults[test]['lower_dollar'] < 0 %} <span class="text-warning"> {% else %} <span class="text-success"> {% endif %}{{ allresults[test]['dollar_pct'] }}</span>
+	</td>
+	-->
+
+	<td>
+		<strong>Dollar Lower Bound:</strong>
+		<p>
+		{% if allresults[test]['upper_dollar'] < 0 %} <span class="text-error"> {% elif allresults[test]['lower_dollar'] < 0 %} <span class="text-warning"> {% else %} <span class="text-success"> {% endif %}{{ allresults[test]['lower_dollar'] }}</span>
+		</p>
+	</td>
+
+	<td>
+		<strong>Dollar Upper Bound:</strong>
+		<p>
+		{% if allresults[test]['upper_dollar'] < 0 %} <span class="text-error"> {% elif allresults[test]['lower_dollar'] < 0 %} <span class="text-warning"> {% else %} <span class="text-success"> {% endif %}{{ allresults[test]['upper_dollar'] }}</span>
+	</p>
+	</td>
+{% endfor %}
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

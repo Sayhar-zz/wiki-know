@@ -1,0 +1,23 @@
+{% extends "result.html" %}
+{% block title %}Result{% endblock %}
+{% block oneword %}
+  <h1 class='text-center' id="result_one_word">
+  {% if guessedcorrectly == True %}
+    <span class="text-success">CORRECT.
+  {% else %}
+    <span class="text-error">INCORRECT.
+  {% endif %}
+  {% if not isconfidence %}
+    There is no clear winner.
+  {% endif %}
+  </span>
+  </h1>
+{% endblock %}
+
+{% block headerclass %}
+{% if leancorrectly or guessedcorrectly %}
+text-success
+{% else %}
+text-error
+{% endif %}
+{% block headerclass}

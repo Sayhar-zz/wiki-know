@@ -1,0 +1,19 @@
+{% extends "result.html" %}
+{% block shots %}
+<div id="displayrow" class='row-fluid text-center'>
+  {% for name in imgs %}
+    <div class='span6'>
+      <h5 class="text-info">{{ longnames[name] }}:</h5>
+      {% for shot in imgs[name] %}
+      {% if shot == imgs[name][1] and manytype == 'multivariate' %}
+      <h6 class="screenshot-glue"><a href="show more examples" onclick="return false">This was a multivariate test. Click here to see other banners in this set.</a>
+      </h6>
+      {% endif %}
+      <img class='screenshot {% if shot != imgs[name][0] and manytype == 'multivariate' %}screenshot-hide' style="display:none" {% else %} '{% endif %} src="{{ shot }}" \> 
+      <!-- ' -->
+      {% endfor %}
+      
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

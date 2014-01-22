@@ -15,11 +15,11 @@
     {% for name in imgs %}
         {% if loop.index0 == 1 %}
           <div class='span4'>
-            <a id="nowinner" href="{{ url_for('show_winner', batch=batch,testname=testname, guess=guessnone) }}" class="btn btn-success">There's no clear winner</a>
+            <a id="nowinner" href="{{ url_for('go_result', batch=batch,testname=testname, guess=guessnone) }}" class="btn btn-success">There's no clear winner</a>
           </div>
         {% endif %}
     <div class='span4'>
-      <a id={{ name.replace('.','').replace('-','').replace(',','').replace(':','').replace('\\','').replace('$','').replace('/','').replace("(", '').replace(")","").replace("'", '').replace('"', '').replace('*','').strip() }} href="{{ url_for('show_winner', batch=batch, testname=testname, guess=name) }}" class="btn btn-success"> This one </a>
+      <a id={{ name.replace('.','').replace('-','').replace(',','').replace(':','').replace('\\','').replace('$','').replace('/','').replace("(", '').replace(")","").replace("'", '').replace('"', '').replace('*','').strip() }} href="{{ url_for('go_result', batch=batch, testname=testname, guess=name) }}" class="btn btn-success"> This one </a>
     </div>
     {% endfor %}
   </div>
