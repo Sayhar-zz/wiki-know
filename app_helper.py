@@ -6,8 +6,12 @@ import urllib2
 from random import choice, shuffle
 from glob import glob
 from time import strftime, gmtime
-from flask_s3 import url_for
 import re
+import hello as main
+if main.is_s3():
+	from flask_s3 import url_for
+else:
+	from flask import url_for
 #app_helper.py
 #called by app_functions.py
 
@@ -29,9 +33,9 @@ def win_dir(testname):
 
 def row_stats(winner_row):
 	d = dict()
-	d['win_by'] = winner_row['bestguess']
-	d['lowerbound'] = winner_row['lowerbound']
-	d['upperbound'] = winner_row['upperbound']
+	d['win_by'] = float(winner_row['bestguess'])
+	d['lowerbound'] = float(winner_row['lowerbound'])
+	d['upperbound'] = float(winner_row['upperbound'])
 	d['dollar_pct'] = float(winner_row['dollarimprovementpct'])
 	d['lower_dollar'] = float(winner_row['dollarlowerpct'])
 	d['upper_dollar'] = float(winner_row['dollarupperpct'])

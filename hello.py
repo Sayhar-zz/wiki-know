@@ -1,16 +1,14 @@
 from flask import Flask
 from flask import url_for as local_url_for
+from flask import render_template
 #from flask import redirect
 #from flask import g
 #from flask import __version__
 from flask_s3 import FlaskS3
 from flask.ext.basicauth import BasicAuth
-from app_functions import *
-
-
-
-
-
+import json
+import app_functions as f
+import app_helper as h
 
 MODES = ["GUESS", "NOGUESS"]
 MODE = MODES[1]
@@ -20,17 +18,23 @@ def setup():
     app.jinja_env.globals.update(local_url_for=local_url_for)
     return app
 
-
 app = setup()
-#config = json.load(open('config.json'))
-app.config['S3_BUCKET_NAME'] = 'wikitoy'
-app.config['BASIC_AUTH_USERNAME'] = 'infinite'
-app.config['BASIC_AUTH_PASSWORD'] = 'jest'
-app.config['BASIC_AUTH_FORCE'] = True
-app.config['USE_S3_DEBUG'] = False
 
-basic_auth = BasicAuth(app)
-s3 = FlaskS3(app)
+
+try:
+    config = json.load(open('config.json'))
+    app.config['S3_BUCKET_NAME'] = config['bucketname']
+    app.config['BASIC_AUTH_USERNAME'] = config['basicauth_name']
+    app.config['BASIC_AUTH_PASSWORD'] = config['basicauth_password']
+    app.config['BASIC_AUTH_FORCE'] = True
+    basic_auth = BasicAuth(app)
+    app.config['USE_S3_DEBUG'] = False
+    s3 = FlaskS3(app)
+except:
+    s3 = False
+
+def is_s3():
+    return s3
 
 
 ### The real stuff
@@ -45,7 +49,7 @@ def welcome():
 @app.route('/dir/<batch>')
 def go_dir(batch):
     if MODE in MODES:
-        return show_dir(batch, MODE)
+        return f.show_dir(batch, MODE)
     else: 
         return render_template('error.html', why="Sorry, but mode " + MODE + " doesn't exist.", title="404'd!"), 404
 
@@ -63,34 +67,34 @@ def go_test(batch, testname):
         return render_template('error.html', batch=batch, why="Ordering scheme: "+batch + " not found", title="Err..."), 404
 
     if testname is None:
-        testname=first_test(batch)
+        testname=h.first_test(batch)
 
     if testname.lower() == 'random':
-        testname=find_random_test(batch)
+        testname=h.find_random_test(batch)
 
     if testname.lower() == 'fin':
         return render_template('finished.html', batch=batch)
 
-    if not test_in_batch(testname, batch):
+    if not h.test_in_batch(testname, batch):
         return render_template('error.html', why="Sorry, but this test doesn't exist in the " + batch + " ordering scheme", title="404'd!"), 404
 
     if MODE == "GUESS":
-        return ask_guess(testname, batch)
+        return f.ask_guess(testname, batch)
     elif MODE == "NOGUESS":
-        return show_noguess(testname, batch)
+        return f.show_noguess(testname, batch)
     else: 
         return render_template('error.html', why="Sorry, but mode " + MODE + " doesn't exist.", title="404'd!"), 404
 
 
 @app.route('/show/<batch>/<testname>/result/<guess>')
 def go_result(batch, testname, guess):
-    if not test_in_batch(testname, batch):
+    if not h.test_in_batch(testname, batch):
         return render_template('error.html', why="Sorry, but this test doesn't exist in the " + batch + " ordering scheme", title="404'd!"), 404
 
     if MODE == "GUESS":
-        return result_guess(testname, batch, guess)
+        return f.result_guess(testname, batch, guess)
     elif MODE == "NOGUESS":
-        return show_noguess(testname, batch)
+        return f.show_noguess(testname, batch)
     else: 
         return render_template('error.html', why="Sorry, but mode " + MODE + " doesn't exist.", title="404'd!"), 404
         

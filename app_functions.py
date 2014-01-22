@@ -10,13 +10,15 @@
 
 #It relies on functions in app_helper.py
 
-from app_helper import *
+import app_helper as h
 from flask import render_template
+from os.path import join
+import csv
 
 def result_guess(testname, batch, guess):
 	#Show the result of the guess. Only in guess mode.
 	#Used to be called show_winner
-	winner_row, dirname = win_dir(testname)
+	winner_row, dirname = h.win_dir(testname)
 
 	if winner_row is None:
 		return render_template('error.html', batch=batch,why="Incorrect Test Name", secret=winner_row), 404
@@ -24,18 +26,18 @@ def result_guess(testname, batch, guess):
 	if not test_in_batch(testname, batch):
 		return render_template('error.html', batch=batch, why="Ordering scheme: "+batch + " not found", title="Err..."), 404
 
-	stats = row_stats(winner_row)
-	guessstats = guess_stats(winner_row, dirname, guess)
-	tables = get_tables(dirname)
+	stats = h.row_stats(winner_row)
+	guessstats = h.guess_stats(winner_row, dirname, guess)
+	tables = h.get_tables(dirname)
 	#diagnostic_num, use_local_diag = max_diagnostic_num(testname)
-	diagnostic_charts = get_diagnostic_charts(dirname)
+	diagnostic_charts = h.get_diagnostic_charts(dirname)
 
 	graphname = 'pamplona.jpeg'
-	force_local_graph = graph_local(testname, graphname)
-	nexttest = next_test(testname, batch)
-	prevtest = prev_test(testname, batch)
+	force_local_graph = h.graph_local(testname, graphname)
+	nexttest = h.next_test(testname, batch)
+	prevtest = h.prev_test(testname, batch)
 
-	diag = get_diag_graphs(testname)
+	diag = h.get_diag_graphs(testname)
 	
 	return render_template('result_guess.html', batch=batch, graphname=graphname, 
 		leancorrectly=guessstats['leancorrectly'], guessedcorrectly=guessstats['guessedcorrectly'], 
@@ -49,16 +51,16 @@ def result_guess(testname, batch, guess):
 def ask_guess(testname, batch):
 	#Ask the user to guess a winner
 	#Only in guess mode
-	winner_row, dirname = win_dir(testname)
-	screenshotlines = screenshot_lines(dirname)
+	winner_row, dirname = h.win_dir(testname)
+	screenshotlines = h.screenshot_lines(dirname)
 	if screenshotlines['error']:
 		return render_template('error.html', batch=batch, why=screenshotlines['why'], title="404'd!"), 404
 	else:
 		screenshotlines = screenshotlines['lines']
 
-	screenshots, longnames, manytype = find_screenshots_and_names(dirname, screenshotlines)
-	stats = row_stats(winner_row)
-	guessnone = get_guessnone()
+	screenshots, longnames, manytype = h.find_screenshots_and_names(dirname, screenshotlines)
+	stats = h.row_stats(winner_row)
+	guessnone = h.get_guessnone()
 
 	return render_template('guess.html', manytype=manytype, batch=batch, 
 		testname=testname, imgs=screenshots, 
@@ -67,32 +69,32 @@ def ask_guess(testname, batch):
 
 def show_noguess(testname, batch):
 	#Show the stats, screenshots, etc all in the same page
-	winner_row, dirname = win_dir(testname)
+	winner_row, dirname = h.win_dir(testname)
 	if winner_row is None:
 		return render_template('error.html', batch=batch,why="Incorrect Test Name", secret=winner_row)
 
-	if not test_in_batch(testname, batch):
+	if not h.test_in_batch(testname, batch):
 		return render_template('error.html', batch=batch, why="Ordering scheme: "+batch + " not found", title="Err..."), 404   
 
-	screenshotlines = screenshot_lines(dirname)
+	screenshotlines = h.screenshot_lines(dirname)
 	if screenshotlines['error']:
 		return render_template('error.html', batch=batch, why=screenshotlines['why'], title="404'd!"), 404
 	else:
 		screenshotlines = screenshotlines['lines']
 
-	screenshots, longnames, manytype = find_screenshots_and_names(dirname, screenshotlines)	
-	stats = row_stats(winner_row)
-	guessstats = guess_stats(winner_row, dirname)
-	tables = get_tables(dirname)
+	screenshots, longnames, manytype = h.find_screenshots_and_names(dirname, screenshotlines)	
+	stats = h.row_stats(winner_row)
+	guessstats = h.guess_stats(winner_row, dirname)
+	tables = h.get_tables(dirname)
 	#diagnostic_num, use_local_diag = max_diagnostic_num(testname)
-	diagnostic_charts = get_diagnostic_charts(dirname)
+	diagnostic_charts = h.get_diagnostic_charts(dirname)
 
 	graphname = 'pamplona.jpeg'
-	force_local_graph = graph_local(testname, graphname)
-	nexttest = next_test(testname, batch)
-	prevtest = prev_test(testname, batch)
+	force_local_graph = h.graph_local(testname, graphname)
+	nexttest = h.next_test(testname, batch)
+	prevtest = h.prev_test(testname, batch)
 
-	diag = get_diag_graphs(testname)
+	diag = h.get_diag_graphs(testname)
 	
 
 	return render_template('result_noguess.html', batch=batch, graphname=graphname, 
@@ -108,7 +110,7 @@ def show_noguess(testname, batch):
 def show_dir(batch, MODE):
 	#show dirname
 	#Depending on the mode, do or don't display certain bits.
-	showthese = all_tests(batch)
+	showthese = h.all_tests(batch)
 	allshots = {}
 	allnames = {}
 	alldates = {}
@@ -119,28 +121,15 @@ def show_dir(batch, MODE):
 			reader = csv.reader(fin, delimiter=',')
 			reader.next()
 			lines = list(reader)
-			screenshots, longnames, manytype = find_screenshots_and_names(dirname, lines)
+			screenshots, longnames, manytype = h.find_screenshots_and_names(dirname, lines)
 			allshots[test] = screenshots
 			allnames[test] = longnames
-			winner_row = get_row(dirname)
-			date = winner_row['time']
-			date = gmtime(float(date))
-			date = strftime("%a, %d %b %Y %H:%M:%S UTC", date)
+			winner_row = h.get_row(dirname)
+			result = h.row_stats(winner_row)
+			date = result['date']
 			alldates[test] = date
-			result = {}
-			if MODE == "NOGUESS":
-				#if we're not guessing
-				result['win_by'] = float(winner_row['bestguess'])
-				result['lowerbound'] = float(winner_row['lowerbound'])
-				result['upperbound'] = float(winner_row['upperbound'])
-				result['dollar_pct'] = float(winner_row['dollarimprovementpct'])
-				result['lower_dollar'] = float(winner_row['dollarlowerpct'])
-				result['upper_dollar'] = float(winner_row['dollarupperpct'])
-				result['winner'] = winner_row['winner']
-				result['loser'] = winner_row['loser']
-			else: 
-				result['winner'] = winner_row['winner']
-				result['loser'] = winner_row['loser']
+			result['winner'] = winner_row['winner']
+			result['loser'] = winner_row['loser']
 			allresults[test] = result
 	if MODE == "NOGUESS":
 		template = "directory_noguess.html"
