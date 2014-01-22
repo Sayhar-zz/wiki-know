@@ -1,3 +1,5 @@
+In this version of wiki-know, you guess before seeing the answer.
+
 ##Setup:
 ####To run this project, first do:  
     source venv/bin/activate
