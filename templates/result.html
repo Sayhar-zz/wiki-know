@@ -44,7 +44,7 @@
   <div class="text-center" id="results_buttonrow">
             <!-- <a class="btn btn-info" href="#" onclick='$(".comments").slideToggle("slow"); return false'>Discuss </a> -->
             <a id="prev" class="btn btn-success" href="{{ url_for('go_test', batch=batch,testname=prevtest) }}">Previous Test</a>
-            <a id="up" class="btn btn-info" href="{{ url_for('go_dir') }}#{{ testname }}">All</a>
+            <a id="up" class="btn btn-info" href="{{ url_for('go_dir', batch=batch) }}#{{ testname }}">All</a>
             <a id="next" class="btn btn-success" href="{{ url_for('go_test', batch=batch, testname=nexttest) }}">Next Test</a>
             
 
