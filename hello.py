@@ -7,8 +7,7 @@ from flask import render_template
 from flask_s3 import FlaskS3
 from flask.ext.basicauth import BasicAuth
 import json
-import app_functions as f
-import app_helper as h
+#NOTE!  We have a couple import statements lower down as well.
 
 MODES = ["GUESS", "NOGUESS"]
 MODE = MODES[1]
@@ -19,7 +18,6 @@ def setup():
     return app
 
 app = setup()
-
 
 try:
     config = json.load(open('config.json'))
@@ -36,6 +34,8 @@ except:
 def is_s3():
     return s3
 
+import app_functions as f
+import app_helper as h
 
 ### The real stuff
 
