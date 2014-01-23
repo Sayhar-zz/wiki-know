@@ -15,20 +15,27 @@ MODE = MODES[1]
 def setup():
     app = Flask(__name__)
     app.jinja_env.globals.update(local_url_for=local_url_for)
+    #app.debug=True
     return app
 
 app = setup()
+
+if not app.debug:
+    import logging
+    file_handler = logging.FileHandler('crash.log')
+    file_handler.setLevel(logging.WARNING)
+    app.logger.addHandler(file_handler)
 
 try:
     config = json.load(open('config.json'))
     app.config['S3_BUCKET_NAME'] = config['bucketname']
     app.config['BASIC_AUTH_USERNAME'] = config['basicauth_name']
     app.config['BASIC_AUTH_PASSWORD'] = config['basicauth_password']
+    app.config['USE_S3_DEBUG'] = False
     if 'mode' in config:
         MODE = config['mode']
     app.config['BASIC_AUTH_FORCE'] = True
     basic_auth = BasicAuth(app)
-    app.config['USE_S3_DEBUG'] = False
     s3 = FlaskS3(app)
 except:
     s3 = False
@@ -38,6 +45,7 @@ def is_s3():
 
 import app_functions as f
 import app_helper as h
+
 
 ### The real stuff
 
@@ -101,6 +109,7 @@ def go_result(batch, testname, guess):
         return render_template('error.html', why="Sorry, but mode " + MODE + " doesn't exist.", title="404'd!"), 404
         
 if __name__ == '__main__':
+    
     app.run(debug=True)
     #app.run()
 

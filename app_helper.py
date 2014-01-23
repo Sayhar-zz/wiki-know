@@ -443,7 +443,7 @@ def max_diagnostic_num(testname, diag_type):
 			#the slash is needed to mimic the bad behavior of url_for
 
 		if exists:
-			print(file_or_url_name)
+			#print(file_or_url_name)
 			if direction == 'decrement':
 				#print "returning " + str(i) + ","+str(use_local)
 				return i, use_local
@@ -482,9 +482,9 @@ def get_or_set_noshot_url():
 	global NOSHOT
 	if not NOSHOT:
 		NOSHOT = url_for('static', filename='img/noshot.gif')
-		exists, isurl = exists_and_is_url(NOSHOT)
-		if(not exists):
-			NOSHOT = local_url_for('static', filename='img/noshot.gif')
+		#exists, isurl = exists_and_is_url(NOSHOT)
+		#if(not exists):
+		#	NOSHOT = local_url_for('static', filename='img/noshot.gif')
 	return NOSHOT
 
 def diagnostic_types(testname):
