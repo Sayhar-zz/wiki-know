@@ -8,3 +8,4 @@ venv
 static/report/*/*.jpeg
 static.report/*/*.png
 reportC.html
+config.json
