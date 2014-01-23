@@ -24,6 +24,8 @@ try:
     app.config['S3_BUCKET_NAME'] = config['bucketname']
     app.config['BASIC_AUTH_USERNAME'] = config['basicauth_name']
     app.config['BASIC_AUTH_PASSWORD'] = config['basicauth_password']
+    if 'mode' in config:
+        MODE = config['mode']
     app.config['BASIC_AUTH_FORCE'] = True
     basic_auth = BasicAuth(app)
     app.config['USE_S3_DEBUG'] = False

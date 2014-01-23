@@ -1,5 +1,6 @@
 {
 "bucketname":"wiki-toy",
 "basicauth_name":"infinite",
-"basicauth_password":"jest"
+"basicauth_password":"jest",
+"mode":"GUESS"
 }
