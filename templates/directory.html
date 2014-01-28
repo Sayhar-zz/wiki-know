@@ -3,29 +3,25 @@
 <div id="displayrow" class='row-fluid'>
 	<div class="span12">
 		<table class="table-striped table-hover" >
-		<tr>
-			<td>
-				{% block rowname %}
-				{% for test in list %}
-				<h4>				
-					<a href="{{ url_for('go_test', batch=batch,testname=test) }}" id="{{ test }}">{{ test }}
-					</a>
-				</h4>
-				<h5>
-				{{ alldates[test] }}
-				</h5>
-				{% endfor %}
-				{% endblock %}
-			</td>
-			
 			{% block rows %}
 			{% endblock %}
-
 		</tr>
+		
 		</table>
 	</div>
 </div>
 {% endblock %}
 
 {% block scripts %}
+<script type="text/javascript">
+click_to_zoom = function(event){
+  var url = event.target.src
+  var img= document.createElement('img');
+  img.src= url;
+  $.colorbox({html:img, width:"85%"});
+}
+
+
+$('.dir_thumb').click(click_to_zoom)
+</script>
 {% endblock %}
