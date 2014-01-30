@@ -1,0 +1,2 @@
+"test_id","var","multiple","country","language","winner","loser","bestguess","p","lowerbound","upperbound","totalimpressions","totaldonations","time","type","testname"
+"B13_1223_tbhd","tab","0","YY","yy","Closing.the.side.tab.doesn't.close.the.top.banner","Closing.the.side.tab.also.closes.the.top.banner",0.217,0.84,-1.9,2.33,33912100,34460,1387825980,"banner",NA

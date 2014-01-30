@@ -23,7 +23,7 @@ def result_guess(testname, batch, guess):
 	if winner_row is None:
 		return render_template('error.html', batch=batch,why="Incorrect Test Name", secret=winner_row), 404
 
-	if not test_in_batch(testname, batch):
+	if not h.test_in_batch(testname, batch):
 		return render_template('error.html', batch=batch, why="Ordering scheme: "+batch + " not found", title="Err..."), 404
 
 	stats = h.row_stats(winner_row)
