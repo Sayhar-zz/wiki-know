@@ -6,12 +6,14 @@
 <h4>				
 	<a href="{{ url_for('go_test', batch=batch,testname=test) }}" id="{{ test }}">{{ test }}
 	</a>
+	<h5>
+	{{ alldates[test] }}
+	</h5>
 </h4>
 </td>
+	
 <td>
 <h5>
-
-
 	<td>
 		<h5>{{ allnames[test][allresults[test]['winner']] }}</h5>
 			<img class="dir_thumb" src="{{ allshots[test][allresults[test]['winner']][0] }}"></img>
