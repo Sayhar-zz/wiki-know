@@ -7,15 +7,20 @@ from flask import render_template
 from flask_s3 import FlaskS3
 from flask.ext.basicauth import BasicAuth
 import json
+import app_functions
+import app_helper
 #NOTE!  We have a couple import statements lower down as well.
 
 MODES = ["GUESS", "NOGUESS"]
 MODE = MODES[1]
 
-def setup():
+
+print "HELLO"
+
+def setup(debug=False):
     app = Flask(__name__)
     app.jinja_env.globals.update(local_url_for=local_url_for)
-    #app.debug=True
+    app.debug=debug
     return app
 
 app = setup()
@@ -43,8 +48,8 @@ except:
 def is_s3():
     return s3
 
-import app_functions as f
-import app_helper as h
+h = app_helper.app_helper(app, s3)
+f = app_functions.app_functions(app, h)
 
 
 ### The real stuff
@@ -109,8 +114,8 @@ def go_result(batch, testname, guess):
         return render_template('error.html', why="Sorry, but mode " + MODE + " doesn't exist.", title="404'd!"), 404
         
 if __name__ == '__main__':
-    
-    app.run(debug=True)
+    app.debug=True
+    app.run()
     #app.run()
 
 

@@ -1,0 +1,1 @@
+Closing.the.side.tab.doesn't.close.the.top.banner

@@ -1,6 +1,19 @@
 {% extends "directory.html" %}
 {% block rows %}	
-{% for test in list %}		
+{% for test in list %}	
+<tr>
+<td>
+<h4>				
+	<a href="{{ url_for('go_test', batch=batch,testname=test) }}" id="{{ test }}">{{ test }}
+	</a>
+	<h5>
+	{{ alldates[test] }}
+	</h5>
+</h4>
+</td>
+	
+<td>
+<h5>
 	<td>
 		<h5>{{ allnames[test][allresults[test]['winner']] }}</h5>
 			<img class="dir_thumb" src="{{ allshots[test][allresults[test]['winner']][0] }}"></img>
@@ -54,8 +67,8 @@
 		{% if allresults[test]['upper_dollar'] < 0 %} <span class="text-error"> {% elif allresults[test]['lower_dollar'] < 0 %} <span class="text-warning"> {% else %} <span class="text-success"> {% endif %}{{ allresults[test]['upper_dollar'] }}</span>
 	</p>
 	</td>
-{% endfor %}
-{% endblock %}
 
-{% block scripts %}
+	</h5>
+	</tr>
+{% endfor %}
 {% endblock %}

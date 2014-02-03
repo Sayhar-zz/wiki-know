@@ -26,7 +26,7 @@
     <h5 class="text-info">
       Additionally, <span class="muted">{% if dollar_pct > 0 %}{{ winner }}{% else %}{{ loser }}{% endif%}</span> received 
       <span class="{% if dollar_pct > 0 %}text-success{% else %}text-error{% endif %}">
-      {{ dollar_pct }}%
+      {% if dollar_pct > 0 %}{{ dollar_pct }}{% else %}{{ -1 * dollar_pct }}{% endif%}%
       </span>
        more dollars than <span class="muted">{% if dollar_pct > 0 %}{{ loser }}{% else %}{{ winner }}{% endif%}</span> per banner impression.
     </h5> 
@@ -173,34 +173,51 @@
 </div>
 {% endblock %}
 {% block scripts %}
-<script>$('.see-results').click(function(){$('.here-geeks').slideToggle('slow')})</script>
-<script type = "text/javascript">
-$(document).keypress(function(e) {
-  if(e.which == 13){
-    $("#next")[0].click();
-  }else if(e.which == 32){ //space
-      $('.see-results')[0].click();
-      $(document).off("keypress"); //you can only do this once.
-      $(document).keypress(function(e) {if(e.which == 13){ $("#next")[0].click();}});
-  }
-});
+<script>
+$('.see-results').click(function(){$('.here-geeks').slideToggle('slow')})
 </script>
-<script type="text/javascript">
-  $(document).keypress(function(e) {
-    if([37, 49].indexOf(e.which) > -1){
-      //if left arrow or 1:
+<script type = "text/javascript">
+  one_two_func = function(e){
+    if([49].indexOf(e.which) > -1){
+      //if 1:
       $("#prev")[0].click();
     }
-    if([39, 50].indexOf(e.which) > -1){
-      //if right arrow or 2:
+    if([50].indexOf(e.which) > -1){
+      //if 2:
+      $("#next")[0].click();
+    }
+    if([48].indexOf(e.which) > -1){
+      //if 0:
+      $("#up")[0].click();
+    }
+  }
+
+  left_right_up_func = function(e){
+    if([37].indexOf(e.which) > -1){
+      //if left arrow
+      $("#prev")[0].click();
+    }
+    if([39].indexOf(e.which) > -1){
+      //if right arrow
       $("#next")[0].click();
     }
     if([38].indexOf(e.which) > -1){
       //if up arrow:
       $("#up")[0].click();
     }
-  });
+  }
+  space_opens_func = function(e){ 
+    if(e.which == 32){ //space
+      $('.see-results')[0].click();
+      $(document).off("keydown", space_opens_func);
+      $(document).off("keydown", left_right_up_func);
+    }
+  } 
+  $(document).keydown(one_two_func);
+  $(document).keydown(left_right_up_func);
+  $(document).keydown(space_opens_func);
 </script>
+
 <script type="text/javascript"> 
   $('.screenshot-glue').click(function(){$(this).parent().children('.screenshot-hide').slideToggle('slow')}) 
 </script>
