@@ -6,6 +6,6 @@ venv
 *data.csv
 *dataCUM.csv
 static/report/*/*.jpeg
-static.report/*/*.png
+static/report/*/*.png
 reportC.html
 config.json

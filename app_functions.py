@@ -120,6 +120,7 @@ class app_functions:
 		allnames = {}
 		alldates = {}
 		allresults = {}
+		allvarnames = {}
 		for test in showthese:
 			winner_row, dirname = self.h.win_dir(test)
 			with open( join(dirname, 'screenshots.csv'), 'r') as fin:
@@ -132,6 +133,7 @@ class app_functions:
 				result = self.h.row_stats(winner_row)
 				date = result['date']
 				alldates[test] = date
+				allvarnames[test] = result['variable']
 				result['winner'] = winner_row['winner']
 				result['loser'] = winner_row['loser']
 				allresults[test] = result
@@ -142,10 +144,10 @@ class app_functions:
 
 
 		if self.app.debug:
-			return render_template(template, mode=MODE, batch=batch, list=showthese, allshots=allshots, allnames=allnames, alldates=alldates, allresults=allresults)
+			return render_template(template, mode=MODE, batch=batch, list=showthese, allshots=allshots, allnames=allnames, alldates=alldates, allresults=allresults, allvarnames=allvarnames)
 		else:
 			try:
-				return render_template(template, mode=MODE, batch=batch, list=showthese, allshots=allshots, allnames=allnames, alldates=alldates, allresults=allresults)
+				return render_template(template, mode=MODE, batch=batch, list=showthese, allshots=allshots, allnames=allnames, alldates=alldates, allresults=allresults, allvarnames=allvarnames)
 			except:
 				#One of the tests doesn't work and it's throwing everything off.
 				return render_template('error.html', why="Sorry, there was a problem. At least one test has bad data. Sorry.", title="Oops"), 404
