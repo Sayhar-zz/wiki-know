@@ -7,6 +7,6 @@ do
 	for file in `ls static/report/$var/*.jpeg`
 	do
 		#echo "s3cmd put $file s3://wikitoy/$file --acl-public"
-		s3cmd put $file s3://wikitoy/$file --acl-public
+		s3cmd sync $file s3://wikitoy/$file --acl-public
 	done
 done

@@ -7,7 +7,6 @@
 #show_noguess(testname, batch)
 #ask_guess(testname, batch)
 #show_dir(batch, MODE)
-
 #It relies on functions in app_helper.py
 
 from flask import render_template
