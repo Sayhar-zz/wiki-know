@@ -108,6 +108,7 @@ class app_helper:
 
 
 	def get_diagnostic_charts(self, directory):
+		#currently this should return nothing:
 		names = glob(directory + '/diagnostic_data*.html')
 		toreturn = list()
 		for name in names:

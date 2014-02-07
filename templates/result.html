@@ -122,6 +122,12 @@
           {{ tables[0]|safe }}
           <h4 class="text-info text-center">Improvement:</h4>
           {{ tables[1]|safe }}
+          <h4 class="text-info text-center">Other:</h4>
+          {% for table in tables[2:tables|length] %}
+            <div>
+              {{ table|safe }}
+            </div>
+          {% endfor %}
         </div>
         <div class="hide-diagnostics">
           <h4 class="text-info text-center">Diagnostics:</h4>
