@@ -26,7 +26,7 @@ class app_helper:
 			self.url_for = flask.url_for
 
 
-	#PUBLIC FACING: 
+	#PUBLIC FACING:
 	def get_guessnone(self):
 		return GUESSNODIFF
 
@@ -71,6 +71,12 @@ class app_helper:
 			tables.append(f.read())
 			f.close()
 			f = open(join(filename,'reportB.html'), 'r')
+			tables.append(f.read())
+			f.close()
+			f = open(join(filename,'reportD.html'), 'r')
+			tables.append(f.read())
+			f.close()
+			f = open(join(filename,'reportE.html'), 'r')
 			tables.append(f.read())
 			f.close()
 		except:
@@ -146,7 +152,7 @@ class app_helper:
 				lines = list(reader)
 		except:
 			return list(error=True, why="No such test: "+testname)
-				
+
 		#so "lines" = lines in screenshots.csv
 
 		if(len(set(zip(*lines)[1])) != 2):
@@ -163,7 +169,7 @@ class app_helper:
 		#manytype: if there are multiple screenshots, is it multivariate or combo?
 		manytype = "multivariate"
 		#remember, 'line' = line in screenshots.csv
-	   
+
 		for line in lines:
 			varname = unicode(line[1])
 			desc = self._real_value(varname, dirname)
@@ -187,7 +193,7 @@ class app_helper:
 				else:
 					#screenshot missing
 					screenshots[varname] = []
-		
+
 		self.NOSHOT = self._get_or_set_noshot_url()
 		for val in screenshots:
 			if screenshots[val] == []:
@@ -201,7 +207,7 @@ class app_helper:
 	def all_tests(self, batch):
 		if(batch not in self.alltests_cache):
 			print 'alltests['+batch+"] is not cached. This should only happen once."
-			if batch == 'chronological' or batch == 'reverse':  
+			if batch == 'chronological' or batch == 'reverse':
 				test_list = walk(join("static", "report")).next()[1]
 				#walk gives (dirpath, dirnames, filenames). We only want dirnames, hence the [1]
 				#metas = glob(join("static", "report", "*","meta.csv"))
@@ -221,7 +227,7 @@ class app_helper:
 								else:
 									#this is the money, right here. Insert the test into a dict where it's key is time of test, and value is testname
 									time_dict[time] = testname
-									inserted_yet = True        
+									inserted_yet = True
 					except:
 						pass
 
@@ -234,12 +240,12 @@ class app_helper:
 				self.alltests_cache['reverse'] = list()
 				for time in sorted_timekey_list:
 					self.alltests_cache['reverse'].append(time_dict[time])
-			
+
 			elif batch == 'random':
 				test_list = walk(join("static", "report")).next()[1]
 				shuffle(test_list)
 				self.alltests_cache[batch] = test_list
-			
+
 			elif batch == 'ascending' or batch == 'descending':
 				metas = glob(join("static", "report", "*","meta.csv"))
 				tests = dict()
@@ -269,7 +275,30 @@ class app_helper:
 				descending = final_list[:]
 				self.alltests_cache['descending'] = descending
 				self.alltests_cache['ascending'] = ascending
+			
+			elif batch == 'english' or batch == 'foreign':
+				english_test_list = list()
+				foreign_gibberish = list()
+				chron = self.all_tests("chronological")
 
+
+				for testname in chron:
+					m = join("static", "report", testname, 'meta.csv')
+					try:
+						with open(m, 'r') as fin:
+							reader = csv.DictReader(fin)
+							r = reader.next()
+							lang = r['language'].lower()
+							if lang == 'yy' or lang == 'en':
+								english_test_list.append(testname)
+							else:
+								foreign_gibberish.append(testname)
+					except:
+						pass
+
+				self.alltests_cache['english'] = english_test_list
+				self.alltests_cache['foreign'] = foreign_gibberish			
+			
 			else:
 				try:
 					test_list = list()
@@ -289,7 +318,7 @@ class app_helper:
 		alltests = self.all_tests(batch)
 		if thistest not in alltests:
 			return False
-		return True		
+		return True
 
 
 
@@ -354,10 +383,10 @@ class app_helper:
 	#PRIVATE:
 
 	def _is_confident(self, winrow):
-	    lowbound = winrow['lowerbound']
-	    if float(lowbound) < 0: #if there is no clear winner
-	        return False
-	    return True
+		lowbound = winrow['lowerbound']
+		if float(lowbound) < 0: #if there is no clear winner
+			return False
+		return True
 
 	def _get_row(self, dirname):
 		try:
@@ -418,7 +447,7 @@ class app_helper:
 	def _exists_and_is_url(self, file_or_url):
 		#Given a url or file, try to fetch that item, and return if it exists or not
 		is_a_url = self._is_url(file_or_url)
-		
+
 
 		if(is_a_url):
 			return self._exists_url(file_or_url), True
@@ -432,7 +461,7 @@ class app_helper:
 		#return 0 if none exist
 		STARTCHECK = 10
 		MAXNUM = 30
-		#start at i = STARTCHECK. See if there's a plot of the name diagnostic<i>.jpeg existing. 
+		#start at i = STARTCHECK. See if there's a plot of the name diagnostic<i>.jpeg existing.
 		#   If not, decrement i until it does. (Stop below 1)
 		#   If so, increment i until it doesn't (Stop at MAXNUM)
 		#return i
@@ -451,7 +480,7 @@ class app_helper:
 				#print ('isurl and not exists')
 				#print ('isurl = '+ str(isurl))
 				#print ('exists = '+ str(exists))
-				exists, isurl = self._exists_and_is_url(join('/static', file_or_url_name)) 
+				exists, isurl = self._exists_and_is_url(join('/static', file_or_url_name))
 				if(exists):
 					use_local = True
 				#the slash is needed to mimic the bad behavior of self.url_for
@@ -486,7 +515,7 @@ class app_helper:
 			return value_slug
 
 
-	
+
 
 	def _get_or_set_noshot_url(self):
 		if not self.NOSHOT:
@@ -507,7 +536,7 @@ class app_helper:
 				alltypes.append(diagtype)
 		alltypes = list(set(alltypes))
 		return alltypes
-		    
+
 
 	#############
 	#############

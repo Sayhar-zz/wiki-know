@@ -37,9 +37,6 @@
     <h5 class="text-center muted span10 offset1" id="explainer">{{ description }}</h5>
   </div>
 
-  {% block shots %}
-  {% endblock %}
-
   {% block nav %}
   <div class="text-center" id="results_buttonrow">
             <!-- <a class="btn btn-info" href="#" onclick='$(".comments").slideToggle("slow"); return false'>Discuss </a> -->
@@ -51,12 +48,20 @@
   </div>
   {% endblock %}
   
+
+  {% block shots %}
+  {% endblock %}
+
+  
+  
   {% block heygeeks %}
   <h5 class='text-center see-results heygeeks'> <a href="{{ graphpath }}" onclick='return false'> 
     <!-- <span class="text-center text-success">Hey Stats Geeks!</span> Click to see how the results looked like over time during the test: </a> -->
+    <!--
     <span class="text-error">Click here</span> to see our internal diagnostics for this test, and how the results looked as we ran the test over time.</a></h5>
+    -->
 
-  <div class="here-geeks" style="display:none">
+  <div class="here-geeks">
     <div class="text-center">
       {% if diagnostic_graphs|length > 1 %} {% for tabtype in diagnostic_graphs.keys() %} {% if tabtype != "" %}
       <a id="{{ tabtype }}_click" class="btn btn-info tabclick">{{ tabtype }} Info</a>
@@ -173,9 +178,10 @@
 </div>
 {% endblock %}
 {% block scripts %}
-<script>
+<!-- <script>
 $('.see-results').click(function(){$('.here-geeks').slideToggle('slow')})
 </script>
+-->
 <script type = "text/javascript">
   one_two_func = function(e){
     if([49].indexOf(e.which) > -1){
