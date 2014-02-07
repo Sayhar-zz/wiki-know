@@ -42,6 +42,9 @@ class app_helper:
 		d['win_by'] = float(winner_row['bestguess'])
 		d['lowerbound'] = float(winner_row['lowerbound'])
 		d['upperbound'] = float(winner_row['upperbound'])
+		d['variable'] = winner_row['var']
+		d['country'] = winner_row['country']
+		d['language'] = winner_row['language']
 		try:
 			d['dollar_pct'] = float(winner_row['dollarimprovementpct'])
 			d['lower_dollar'] = float(winner_row['dollarlowerpct'])
