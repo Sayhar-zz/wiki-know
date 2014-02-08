@@ -1,10 +1,11 @@
 In this version of wiki-know, you guess before seeing the answer.
 
 ##Setup:
-####To run this project, first do:  
+####To run this project, first do:
+	pip install -r requirements.txt
     source venv/bin/activate
 ####Then do: 
-    foreman start
+    python hello.py
 
 
 
