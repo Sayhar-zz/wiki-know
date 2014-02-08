@@ -67,6 +67,17 @@ class app_helper:
 		return(d)
 
 
+	def get_info(self, dirname):
+		infofile = "info.txt"
+		try:
+			with open(join(dirname, infofile), 'r') as fin:
+				infotext = fin.read()
+		except:
+			#probably no such file
+			infotext = ""
+		return infotext
+
+
 	def get_tables(self, filename):
 		try:
 			tables = list()

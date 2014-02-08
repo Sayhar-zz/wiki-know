@@ -36,7 +36,7 @@ class app_functions:
 		tables = self.h.get_tables(dirname)
 		#diagnostic_num, use_local_diag = max_diagnostic_num(testname)
 		diagnostic_charts = self.h.get_diagnostic_charts(dirname)
-
+		info = self.h.get_info(dirname)
 		graphname = 'pamplona.jpeg'
 		force_local_graph = self.h.graph_local(testname, graphname)
 		nexttest = self.h.next_test(testname, batch)
@@ -49,7 +49,7 @@ class app_functions:
 			isconfidence=guessstats['isconfidence'], win_by=stats['win_by'], atleast=stats['lowerbound'], 
 			atmost=stats['upperbound'], winner=guessstats['winner'], loser=guessstats['loser'], testname=testname, 
 			nexttest=nexttest, prevtest=prevtest, tables=tables, diagnostic_graphs=diag,
-			diagnostic_charts=diagnostic_charts,  
+			diagnostic_charts=diagnostic_charts,  description=info,
 			force_local_graph=force_local_graph, dollar_pct=stats['dollar_pct'], lower_dollar=stats['lower_dollar'], upper_dollar=stats['upper_dollar'])
 
 
@@ -93,7 +93,7 @@ class app_functions:
 		tables = self.h.get_tables(dirname)
 		#diagnostic_num, use_local_diag = max_diagnostic_num(testname)
 		diagnostic_charts = self.h.get_diagnostic_charts(dirname)
-
+		info = self.h.get_info(dirname)
 		graphname = 'pamplona.jpeg'
 		force_local_graph = self.h.graph_local(testname, graphname)
 		nexttest = self.h.next_test(testname, batch)
@@ -106,7 +106,7 @@ class app_functions:
 			isconfidence=guessstats['isconfidence'], win_by=stats['win_by'], atleast=stats['lowerbound'], 
 			atmost=stats['upperbound'], winner=guessstats['winner'], loser=guessstats['loser'], 
 			testname=testname, nexttest=nexttest, prevtest=prevtest, tables=tables, 
-			diagnostic_graphs=diag,
+			diagnostic_graphs=diag, description=info,
 			diagnostic_charts=diagnostic_charts, force_local_graph=force_local_graph, 
 			manytype=manytype, imgs=screenshots, longnames=longnames, 
 			dollar_pct=stats['dollar_pct'], lower_dollar=stats['lower_dollar'], 
