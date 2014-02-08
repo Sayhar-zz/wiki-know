@@ -79,3 +79,7 @@
 .dir_thumb{
 	max-width: 150px;
 }
+
+.dir_row td{
+	padding: 0 16px 0 16px;
+}
