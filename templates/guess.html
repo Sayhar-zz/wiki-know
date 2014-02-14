@@ -11,7 +11,7 @@
     <h5 class="text-center muted span10 offset1" id="explainer">{{ date }}</h5>
     <div class="span1"></div>
   </div>
-  <div id="displayrow" class='row-fluid text-center'>
+  <div class='row-fluid text-center displayrow'>
     {% for name in imgs %}
         {% if loop.index0 == 1 %}
           <div class='span4'>
@@ -25,7 +25,7 @@
   </div>
 
   
-  <div id="displayrow" class='row-fluid text-center'>
+  <div class='displayrow row-fluid text-center'>
   {% for name in imgs %}
     <div class='span6'>
       <h5 class="text-info">{{ longnames[name] }}:</h5>

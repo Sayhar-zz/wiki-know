@@ -44,80 +44,95 @@ _gaq.push(['_trackPageview']);
 </head>
 <body>
   <!-- <a href="//github.com/" class="hidden-phone"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a> -->
-  <div class="navbar navbar-inverse">
-    <div class="navbar-inner">
-      <a class="brand" href="{{ local_url_for('welcome') }}">Smallest Sample</a>
-      <ul class="nav">
-        <!-- <li  class="active"> --> <li><a href="{{ local_url_for('welcome') }}">About</a></li>
-        
-        <li><a href="https://github.com/Sayhar/wiki-guess">Github</a></li>
-        <li><a href="#" 
-  onclick="
-    window.open(
-      'https://www.facebook.com/sharer/sharer.php?u={{ local_url_for('welcome') }}', 
-      'facebook-share-dialog', 
-      'width=626,height=436'); 
-    return false;">
-  Share on Facebook
-        </a></li>
+  <div class="container-fluid">
 
-        {% block navbaritem %}
-        {% endblock %}
-      </ul>
+    <div class="row-fluid">
+      <div class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="{{ local_url_for('welcome') }}"><span class="sitename">Smallest Sample</span></a>
+        </div>
+        <div class="navbar-collapse collapse navbar-responsive-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="{{ local_url_for('welcome') }}">About</a></li>
+            
+            <li><a href="https://github.com/Sayhar/wiki-guess"><i class="fa fa-github-alt"></i>Github</a></li>
+            <li><i class="fa fa-facebook-square"></i>
+              <a href="#" 
+                onclick="
+                  window.open(
+                    'https://www.facebook.com/sharer/sharer.php?u={{ local_url_for('welcome') }}', 
+                    'facebook-share-dialog', 
+                    'width=626,height=436'); 
+                  return false;">
+                Share on Facebook
+              </a>
+            </li>
+
+            {% block navbaritem %}
+            {% endblock %}
+          </ul>
+        </div>
+      </div>
     </div>
-  </div> 
-  <div class="container">
-    <div id="content" class="clearfix">{% block content %}{% endblock %}</div>
+  
+    <div class="row-fluid">
+      <div id="content" class="clearfix welcome-header">{% block content %}{% endblock %}</div>
+    </div>
 
-    {% block hidden %}
-    <div class="popup" style='display:none'>
-      <div id='popup_content'>
-        <br/>
-        <h3 class="text-success text-center" >Welcome.</h3>
-        <div class="text-info" style="padding: 30px;">
-          <p>This site presents a taste of what the Wikimedia fundraising team has learned over the course of hundreds and hundreds of tests.</p>
+    <div class="row-fluid">
 
-          <p>On this site, you play a game. First, you'll see two different types of banners. Choose the one you think inspired the most donations, and then you'll go to a page that shows how right (or wrong) you were. Keep going to see more tests. </p>
+      {% block hidden %}
+      <div class="popup" style='display:none'>
+        <div id='popup_content'>
+          <br/>
+          <h3 class="text-success text-center" >Welcome.</h3>
+          <div class="text-info" style="padding: 30px;">
+            <p>This site presents a taste of what the Wikimedia fundraising team has learned over the course of hundreds and hundreds of tests.</p>
 
-          <p><strong><a href="{{ local_url_for('welcome') }}">Please check the about page to learn more about how and why we've run these tests.</a></strong> </p>
-          <div class="text-right">
-            <a href="closeme" onclick="$.colorbox.close(); return false" class="btn btn-success">Understood.</a>
+            <p>On this site, you play a game. First, you'll see two different types of banners. Choose the one you think inspired the most donations, and then you'll go to a page that shows how right (or wrong) you were. Keep going to see more tests. </p>
+
+            <p><strong><a href="{{ local_url_for('welcome') }}">Please check the about page to learn more about how and why we've run these tests.</a></strong> </p>
+            <div class="text-right">
+              <a href="closeme" onclick="$.colorbox.close(); return false" class="btn btn-success">Understood.</a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    {% endblock %}
+      {% endblock %}
 
+    </div>
+
+    <div class="row-fluid">
+      <div id="footer">
+        <div class="row-fluid text-center whowhathow muted">
+          <div class="span4">
+            <h5><a href="{{ local_url_for('welcome') }}">About</a></h5>
+          </div>
+          <div class="span4">
+            <h5></h5>
+          </div>
+          <div class="span4">
+            <h5>Built with <a href="//flask.pocoo.org">Flask</a>, <a href="//twitter.github.com/bootstrap/">Bootstrap</a>, and <a href="//www.r-project.org/">R</a></h5>
+            </div>
+          </div>
+          {% block footer %}
+          <div class="muted text-center">
+            <a rel="license" href="//www.gnu.org/licenses/agpl.html">
+              <img src="{{ local_url_for('static', filename='img/agplv3.png') }}">
+            </a>
+            <a rel="license" href="//creativecommons.org/licenses/by-sa/3.0/">
+              <img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by-sa/3.0/88x31.png" />
+            </a>
+            <h6 class="text-center">Code distributed under <a href="//www.gnu.org/licenses/agpl.html">AGPLv3</a>, data <a rel="license" href="//creativecommons.org/licenses/by-sa/3.0/">CC BY SA 3.0</a></h6>
+
+
+
+          </div>
+          {% endblock %}
+        </div>
+    </div>
 
   </div>
-
-  <div id="footer">
-    <div class="row-fluid text-center whowhathow muted">
-      <div class="span4">
-        <h5><a href="{{ local_url_for('welcome') }}">About</a></h5>
-      </div>
-      <div class="span4">
-        <h5></h5>
-      </div>
-      <div class="span4">
-        <h5>Built with <a href="//flask.pocoo.org">Flask</a>, <a href="//twitter.github.com/bootstrap/">Bootstrap</a>, and <a href="//www.r-project.org/">R</a><h5>
-        </div>
-      </div>
-      {% block footer %}
-      <div class="muted text-center">
-        <a rel="license" href="//www.gnu.org/licenses/agpl.html">
-          <img src="{{ local_url_for('static', filename='img/agplv3.png') }}">
-        </a>
-        <a rel="license" href="//creativecommons.org/licenses/by-sa/3.0/">
-          <img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by-sa/3.0/88x31.png" />
-        </a>
-        <h6 class="text-center">Code distributed under <a href="//www.gnu.org/licenses/agpl.html">AGPLv3</a>, data <a rel="license" href="//creativecommons.org/licenses/by-sa/3.0/">CC BY SA 3.0</a></h6>
-
-
-
-      </div>
-      {% endblock %}
-    </div>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="{{ local_url_for('static', filename='js/bootstrap.min.js') }}"></script>
