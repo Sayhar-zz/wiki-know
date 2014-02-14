@@ -1,8 +1,13 @@
 /*guess.html*/
+.container-fluid {
+	margin: 0;
+	padding: 0;
+}
 
 .screenshot {
 	display: inline-block;
-	height: auto;
+	height: 50%;
+	width: 90%;
 	padding-bottom: 5%
 }
 
@@ -11,6 +16,36 @@
 }
 .screenshot-hide{
 
+}
+
+.welcome-header {
+	margin-top:100px;
+}
+
+.frontspan {
+	height: 150px;
+}
+
+.results-button {
+	width: 90%;
+}
+
+.sitename {
+	background-color: rgba(255,255,255,0.2);
+	padding: 10px;
+	border-radius: 3px;
+}
+
+.displayrow {
+	margin:20px;
+}
+
+.navbar-default .navbar-nav>li>a {
+	color: #18bc9c;
+}
+
+.navbar-default .navbar-nav>li>a:hover {
+	color: #fff;
 }
 
 .vs{
@@ -27,7 +62,7 @@
 	margin-top: 10%;
 }
 #result_info{
-	margin-top: 7%;
+	margin-top: 9%;
 }
 #results_buttonrow{
 	/*margin-top: 7%; */
