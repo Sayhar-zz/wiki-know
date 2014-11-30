@@ -1,12 +1,29 @@
-In this version of wiki-know, you guess before seeing the answer.
+#Welcome#
+
+The 5th biggest site on the internet runs without ads, and without government support. That site is Wikipedia (hosted by the Wikimedia Foundation), and it survives on small-dollar donations! Those donations serve 500 million users, keep servers running, and power the entire organization.
+
+Wikipedia and its small-donor funding model is something quite special. We use testing and experimentation to figure out the best way to explain the Wikimedia story to our users, and improve our fundraising efficiency. While doing so, we hope to cause minimum disruption to any single visitor. Testing and analysis is helping us reach that goal.
+
+We've created this web app to showcase some of our significant tests and findings (and keep track of them internally as well!)
+
+##Some Notes:
+
+This code specifically refers to the presentation and distribution of the analysis we gained from tests we ran. Two sample tests (one with screenshots, one without) were specially scrubbed and included as sample data to show how the app might function. In production, this app includes thousands of test results.
+
+You can see a live demo of this codebase (drawing on two sample datasets) here, hosted on heroku.
+
+To see the code that powers the actual analysis, see [the Wiki-Crunch codebase](https://github.com/Sayhar/wiki-crunch), which, while perhaps more technically interesting, is probably less useful to you, since it assumes the specific internal configuration of the WMF fundraising team. 
+
+*In this version of wiki-know, you guess before seeing the answer*.
 
 ##Setup:
 ####To run this project, first do:
-	pip install -r requirements.txt
-    source venv/bin/activate
+		make then run a virtual envirnonment (`virtualenv venv`, `source venv/bin/activate`)
+		`pip install -r requirements.txt`
 ####Then do: 
-    python hello.py
-
+    `python hello.py`
+####Note: 
+		Sorting by "interesting handpicked tests" will give an error. This is because that data is currently private and can't be copied on this public repository. Sorry.
 
 
 ##Adding your own tests:

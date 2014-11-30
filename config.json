@@ -1,6 +1,6 @@
 {
 "bucketname":"wikitoy",
-"basicauth_name":"infinite",
-"basicauth_password":"jest",
+"basicauth_name":"user",
+"basicauth_password":"password",
 "mode":"NOGUESS"
 }

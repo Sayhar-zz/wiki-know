@@ -5,7 +5,7 @@ from flask import render_template
 #from flask import g
 #from flask import __version__
 from flask_s3 import FlaskS3
-from flask.ext.basicauth import BasicAuth
+#from flask.ext.basicauth import BasicAuth #<---- uncomment this when you want an easy basicauth to protecty your site
 import json
 import app_functions
 import app_helper
@@ -34,13 +34,13 @@ if not app.debug:
 try:
     config = json.load(open('config.json'))
     app.config['S3_BUCKET_NAME'] = config['bucketname']
-    app.config['BASIC_AUTH_USERNAME'] = config['basicauth_name']
-    app.config['BASIC_AUTH_PASSWORD'] = config['basicauth_password']
+    #app.config['BASIC_AUTH_USERNAME'] = config['basicauth_name']  <---- #uncomment this when you want basic authentication for your site
+    #app.config['BASIC_AUTH_PASSWORD'] = config['basicauth_password'] #uncomment this when you want basic authentication for your site
     app.config['USE_S3_DEBUG'] = False
     if 'mode' in config:
         MODE = config['mode']
-    app.config['BASIC_AUTH_FORCE'] = True
-    basic_auth = BasicAuth(app)
+    #app.config['BASIC_AUTH_FORCE'] = True  #uncomment this when you want basic authentication for your site
+    #basic_auth = BasicAuth(app) <---- #uncomment this when you want basic authentication for your site
     s3 = FlaskS3(app)
 except:
     s3 = False
